@@ -27,17 +27,17 @@ def inverse(x, a, b):
     return a / x + b
 
 models = {
-    'Power Law ($y = a \cdot x^b$)': power_law,
-    'Exponential ($y = a \cdot e^{bx}$)': exponential,
-    'Inverse Sqrt ($y = a/\sqrt{x} + b$)': inverse_sqrt,
-    'Inverse ($y = a/x + b$)': inverse
+    'Ley de Potencias ($y = a \cdot x^b$)': power_law,
+    'Exponencial ($y = a \cdot e^{bx}$)': exponential,
+    'Inv. Raíz Cuadrada ($y = a/\sqrt{x} + b$)': inverse_sqrt,
+    'Inversa ($y = a/x + b$)': inverse
 }
 
 results = {}
 x_fit = np.linspace(min(x) * 0.9, max(x) * 1.1, 100)
 
 plt.figure(figsize=(10, 7))
-plt.errorbar(x, y, yerr=y_err, fmt='o', label='Data', color='black', capsize=4)
+plt.errorbar(x, y, yerr=y_err, fmt='o', label='Datos', color='black', capsize=4)
 
 colors = ['red', 'blue', 'green', 'purple']
 for i, (name, func) in enumerate(models.items()):
@@ -98,9 +98,9 @@ with open(csv_out, 'w') as f:
         f.write(f'{clean_name},{a},{err_a},{b},{err_b},{r2}\n')
 print(f"Regression results saved to {csv_out}")
 
-plt.title('Critical Distance ($L_c$) vs Effective Mass ($m^*$)\nRegression Analysis', fontsize=14)
-plt.xlabel('Effective Mass ($m_0$)', fontsize=12)
-plt.ylabel('Critical Distance $L_c$ (nm)', fontsize=12)
+plt.title('Distancia Crítica ($L_c$) vs Masa Efectiva ($m^*$)\nAnálisis de Regresión', fontsize=14)
+plt.xlabel('Masa Efectiva ($m_0$)', fontsize=12)
+plt.ylabel('Distancia Crítica $L_c$ (nm)', fontsize=12)
 plt.legend(fontsize=10)
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.tight_layout()
