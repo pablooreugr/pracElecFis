@@ -1,10 +1,11 @@
 *.aux
 *.bbl
-*fbd_latexmk
+*.fbd_latexmk
 *.fls
 *.log
 *.out
 *.synctex.gz
 *.toc
 *.pdf
+*.blg
 __pycache__/
