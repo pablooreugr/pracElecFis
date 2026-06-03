@@ -1,48 +1,48 @@
-This is BibTeX, Version 0.99e (TeX Live 2026)
+This is BibTeX, Version 0.99d
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: unsrt.bst
-I found no \citation commands---while reading file main.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
 Database file #1: referencias.bib
-You've used 0 entries,
+You've used 2 entries,
             1791 wiz_defined-function locations,
-            445 strings with 3517 characters,
-and the built_in function-call counts, 18 in all, are:
-= -- 0
-> -- 0
+            458 strings with 3889 characters,
+and the built_in function-call counts, 434 in all, are:
+= -- 28
+> -- 31
 < -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 7
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
++ -- 11
+- -- 9
+* -- 31
+:= -- 79
+add.period$ -- 5
+call.type$ -- 2
+change.case$ -- 2
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+cite$ -- 2
+duplicate$ -- 14
+empty$ -- 41
+format.name$ -- 9
+if$ -- 90
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 3
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 2
+missing$ -- 1
+newline$ -- 12
+num.names$ -- 2
+pop$ -- 8
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 1
+skip$ -- 7
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
+substring$ -- 18
+swap$ -- 2
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 error message)
+while$ -- 3
+width$ -- 3
+write$ -- 21
