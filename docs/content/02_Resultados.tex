@@ -1,3 +1,64 @@
 % !TeX root = ../main.tex
 
 \section{Resultados}
+
+\subsection{Interpretación física del sistema y parámetros del simulador}
+
+Para la realización del proyecto, se ha usado la herramienta de 'Piece-Wise Constant Potential Barriers Tool' del simulador Nanohub \cite{nanohub_pcpbt}. Este permite la modelización de perfiles de energía potencial situadas entre una fuente y un drenador mediante la determinación del potencial en la barrera, así como la longitud y masa efectiva de cada segmento. \\
+
+En este proyecto, se busca transponer un dispositivo MOSFET planar a este simulador con el objetivo de estudiar cuál es la longitud crítica ($L_c$) de un material para la cual los efectos de tunelización cuánticos hacen ineficiente este dispositivo. \\
+Dado que este se trata de un sistema 2D, uno de los retos es determinar cómo ajustar los parámetros para poder estudiarlo como un modelo 1D en el simulador. \\
+La justificación técnica para tratar este sistema como un modelo 1D se basa en la separabilidad del potencial electrostático.  esta aproximación, el simulador modela el perfil del borde de la banda de conducción a lo largo de la línea de corriente principal, integrando los efectos de confinamiento de las otras dimensiones en la altura efectiva de la barrera
+
+Un dispositivo MOSFET cuenta con tres contactos: fuente, canal, y drenador. El canal es la región del dispositivo que actúa como un puente conductor para los electrones (o huecos) entre los contactos de fuente (source) y drenador (drain). Se comporta como una barrera de potencial controlada de forma externa, la cual es variable dependiendo del estado en el que se encuentre el transistor. \\
+
+Para nuestro caso, simularemos el estado \textbf{OFF} del sistema, para poder determinar para qué longitud del transistor ocurre el paso de electrones cuando se apaga el dispositvo. Este estado se entiende de forma sencilla como una barrera de potencial, impuesta por el canal y situada por encima de los niveles de la fuente y drenador, que simula la banda de conducción. Los parámetros a tener en cuenta en el sistema son: 
+
+\begin{itemize}
+    \item 1 barrera de potencial de \textbf{$V = 0.6$ eV}. La fuente y el drenador se sitúan a un nivel de 0 eV. Esta diferencia de energía representa la barrera que los electrones deben superar o atravesar por efecto túnel.   
+    \item  \textbf{Masa Efectiva ($m^*$):} Este será un parámetro variable en el intervalo $m^*\in(0,1.1\,m_e]$. Se pondrán las tres regiones al mismo valor de masa efectiva: esto es debido a que se está tratando al dispositivo como una \textbf{homounión}, donde todo el transistor está fabricado sobre el mismo material semiconductor.
+    \item La \textbf{longitud} de la fuente y drenador será, de forma constante, de $20$nm para cada uno: estas regiones deben ser significativamente más grandes que el canal para funcionar como reservorios masivos de electrones, lo que permite mantener el equilibrio termodinámico y asegurar que el nivel de Fermi permanezca fijo independientemente de la carga transferida hacia el canal. 
+    \item En cuanto a la longitud de la puerta L, esta es variable. 
+\end{itemize}
+
+
+Una vez se tiene todo esto en cuenta, jugaremos con los parámetros de longitud, guardando en cada caso la transmisión frente a la energía obtenida por el simulador. 
+Se representan un par de ejemplos claramente diferenciables entre dos casos de masa efectiva distintas: 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/T_vs_E_m006.png}
+    \caption{En el eje x se muestran los valores de energía (en eV), mientras que en el eje y, el coeficiente de transmisión. Se utiliza un material semiconductor de masa efectiva $m* = 0.06 m_e$, siendo $m_e$ la masa del electrón, y una longitud de canal de $L=5$nm. }
+    \label{fig:TvsE_006m_5nm}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/T_vs_E_m11.png}
+    \caption{En el eje x se muestran los valores de energía (en eV), mientras que en el eje y, el coeficiente de transmisión. Se utiliza un material semiconductor de masa efectiva $m* = 1.1 m_e$, siendo $m_e$ la masa del electrón, y una longitud de canal de $L=5$nm. }
+    \label{fig:TvsE_11m_5nm}
+\end{figure}
+
+Ahora, para cada valor de masa efectiva, calculamos la transmisión media a partir de (INCLUIR FORMULA JULIO) para diferentes longitudes del canal. La longitud del canal variará entre $1$nm a $10$nm. \\
+En total, se incluyen las curvas para 11 valores de masas efectivas distintas. Sus valores han sido determinados de forma arbitraria en el intervalo determinado, exceptuando la masa efectiva del Silicio ($m* = 0.19m_e$), dado que es el material más utilizado en la fabricación de transistores industriales. \footnote{Al usar un solo valor de masa efectiva, sin diferenciar las componentes del valle en el que se encuentra el máximo de un material específico, suponemos que el material se comporta de forma uniforme en la dirección de la simulación.}
+
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/combined_transmission.png}
+    \caption{En el eje x se muestran los valores de longitud (en nanómetros), mientras que en el eje y, el coeficiente de transmisión media calculado a partir de REFERENCIA. Se muestra en la leyenda las masas efectiivas escogidas para cada curva. La unión entre los puntos de cada curva se hace mediante un proceso de interpolación por splines cúbicos. }
+    \label{fig:trans_media_variasmasas}
+\end{figure}
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.65\textwidth]{img/regression_analysis.png}
+    \caption{En el eje x se muestran los valores de longitud (en nanómetros), mientras que en el eje y, el coeficiente de transmisión media calculado a partir de REFERENCIA. Se muestra en la leyenda las masas efectiivas escogidas para cada curva. La unión entre los puntos de cada curva se hace mediante un proceso de interpolación utilizando un polinomio de tercer grado entre cada par de puntos. }
+    \label{fig:Lcritica_masaef}
+\end{figure}
+
+Por último, a partir de la interpolación entre datos, encontramos, para cada material, la longitud crítica para la cual se supera el límite de transmisión a partir de la cual deja de ser eficiente el transistor. Si representamos cómo varía esta longitud crítica en función de la masa efectiva escogida, podremos discutir sistemáticamente cuáles son los materiales más efectivos. Esto se recoge en la \autoref{fig:Lcritica_masaef}.
+
+
