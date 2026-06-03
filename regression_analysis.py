@@ -83,6 +83,21 @@ for i, (name, func) in enumerate(models.items()):
     except Exception as e:
         print(f"Could not fit {name}: {e}")
 
+# Save results to CSV
+csv_out = 'regression_results.csv'
+with open(csv_out, 'w') as f:
+    f.write('Model,Parameter a,Error a,Parameter b,Error b,R_squared\n')
+    for name, res in results.items():
+        a = res['params'][0]
+        err_a = res['errors'][0]
+        b = res['params'][1]
+        err_b = res['errors'][1]
+        r2 = res['r_squared']
+        # Clean name for CSV
+        clean_name = name.split(' (')[0]
+        f.write(f'{clean_name},{a},{err_a},{b},{err_b},{r2}\n')
+print(f"Regression results saved to {csv_out}")
+
 plt.title('Critical Distance ($L_c$) vs Effective Mass ($m^*$)\nRegression Analysis', fontsize=14)
 plt.xlabel('Effective Mass ($m_0$)', fontsize=12)
 plt.ylabel('Critical Distance $L_c$ (nm)', fontsize=12)
