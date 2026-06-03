@@ -23,7 +23,7 @@ def fermi_dirac(E, mu, T):
 # ==========================================
 # 2. DATA FILE DISCOVERY
 # ==========================================
-data_dir = 'datos/098-06eV'
+data_dir = 'data/MOSFET/110-06eV'
 file_pattern = re.compile(r'(\d+(?:_\d+)?)\s*nm\.txt$', re.IGNORECASE)
 
 lengths = []

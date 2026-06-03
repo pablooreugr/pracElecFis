@@ -1,3 +1,65 @@
 % !TeX root = ../main.tex
 
 \section{Introducción}
+Durante las últimas décadas, la miniaturización de los dispositivos electrónicos ha guiado la revolución de la informática. 
+Un progreso históricamente impulsado por la Ley de Moore (que no vale para nada\footnote{Palabras textuales de Francisco.}), que predice un avance exponencial en la cantidad de transistores 
+en un dispositivo. Esto ha permitido la creación de dispositivos cada vez más potentes y eficientes, pero también ha planteado desafíos significativos en el diseño y la fabricación de circuitos integrados.
+Sin embargo, la medida de los transistores se ha acercado a límites físicos debido a la naturaleza cuántica de los electrones.
+El obstáculo más importante para la miniaturización de los transistores es el fenomeno de tunelización cuántica, que permite a los electrones atravesar la barrera de potencial
+del transistor incluso cuando carece de la energía necesaria. La longitud a la que la corriente de fuga se vuelve significativa es del orden de los nanómetros, lo que limita
+el tamaño de los transistores y, por tanto, la cantidad de transistores en un chip.
+
+En este contexto, la simulación de dispositivos electrónicos a escala nanométrica se ha convertido en una herramienta esencial para comprender y predecir su comportamiento.
+En esta práctica, nos enfocaremos en la simulación de transistores MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistor) utilizando 
+la herramienta de simulación \cite{agarwal2008pcpbt}. Esta herramienta nos permite simular una barrera de potencial en un circuito y nos ofrece la 
+distribución en energía de la transmisión de electrones a través de la barrera. Gracias a esta función de transmisión en función de energía, podemos 
+calcular una transmisión efectiva, que es una medida de la probabilidad de que los electrones atraviesen la barrera. Podemos usar la distribución de Fermi-Dirac f(E)
+en el source y el drain para ponderar la función de transmisión.\\
+La transmisión efectiva se calcula según la siguiente fórmula:
+\begin{equation}
+    \label{eq:teff}
+    T_{avg} = \frac{\int_{0}^{\infty} T(E) (f_s(E) - f_d(E)) dE}{\int_{0}^{\infty} (f_s(E) - f_d(E)) dE}
+\end{equation}
+Donde $f_s(E)$ y $f_d(E)$ son las distribuciones de Fermi-Dirac en el source y el drain, respectivamente.
+\paragraph{}
+Lo que buscamos es la longitud para la cuál la transmisión efectiva alcanza un valor de $10^{-4}$, que corresponde a una corriente de fuga significativa\cite{yuan2026quantum}.
+Para hallar este valor, se realizarán diferentes simulaciones variando la longitud de la barrera de potencial, y se interpolarán los resultados para encontrar la longitud crítica.
+
+El objetivo de esta práctica es comprender la dependencia de esta longitud crítica con la masa efectiva del material presente en el transistor, y cómo utilizar esta
+información para diseñar transistores más eficientes y minimizar la corriente de fuga en dispositivos electrónicos a escala nanométrica.
+Un estudio teórico de esta dependencia entre la longitud crítica y la masa efectiva ofrece el siguiente resultado:
+\begin{equation}
+    \label{eq:lym*}
+    L_c\propto \frac{1}{\sqrt{m^*}}
+\end{equation}
+Donde $L_c$ es la longitud crítica, $m^*$ es la masa efectiva.\\ 
+\paragraph{}
+Buscamos por tanto, comprobar que los datos experimentales obtenidos de longitud crítica para diferentes masas efectivas se ajustan a esta relación de dependencia.
+Siguiendo este razonamiento, se realizará un ajuste de los datos experimentales a una función de potencias $L_c = A \cdot (m^*)^B$, donde $A$ y $B$ son constantes a determinar. Si el valor de $B$ se aproxima a -0.5, esto confirmaría la relación de dependencia propuesta.
+\paragraph{}
+La deducción de esta relación de dependencia se basa en la simplificación del
+coeficiente de transmisión para una barrera como:
+\begin{equation}
+    \label{eq:tunneling}
+    T(E) \approx e^{-2\kappa L}
+\end{equation}
+Donde $\kappa$ es una constante de decaimiento que se puede calcular como:
+\begin{equation}
+    \label{eq:kappa}
+    \kappa = \sqrt{\frac{2m^*(V_0 - E)}{\hbar^2}}
+\end{equation}
+donde $m^*$ es la masa efectiva del material presente en el transistor, $V_0$ es la altura de la barrera de potencial, $E$ es la energía del electrón, y $\hbar$ es la constante de Planck reducida.\\
+Para encontrar la longitud crítica $L_c$ a la cual la transmisión efectiva $T_{avg}$ alcanza un valor de $10^{-4}$, podemos usar la aproximación de que la transmisión efectiva es dominada por la transmisión a una energía específica, lo que nos permite escribir:
+\begin{equation}
+    \label{eq:tavg_approx}
+    T_{avg} \approx e^{C\cdot \sqrt{m^*} L_c}
+\end{equation}
+donde $C$ es una constante que depende de la altura de la barrera de potencial y la energía del electrón.\\
+Despejando, se obtiene la relación de dependencia entre la longitud crítica y la masa efectiva:
+\begin{equation}
+    \label{eq:lym*_final}
+    L_c \propto \frac{1}{\sqrt{m^*}}
+\end{equation}
+
+
+
