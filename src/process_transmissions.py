@@ -162,7 +162,7 @@ colors = [cmap(i) for i in np.linspace(0, 1, len(results))]
 for i, res in enumerate(results):
     L = res['L']
     T = res['T_avg']
-    plt.plot(L, T, marker='o', linestyle='', color=colors[i], markersize=5, label=f"m* = {res['mass']}")
+    plt.plot(L, T, marker='o', linestyle='', color=colors[i], markersize=5, label=f"m* = {res['mass']} $m_e$")
     
     # Plot the spline over the data range
     L_fit = np.linspace(min(L), max(L), 200)
