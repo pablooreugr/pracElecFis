@@ -2,6 +2,8 @@ import os
 import re
 import numpy as np
 from scipy.integrate import simpson
+from scipy.interpolate import CubicSpline
+from scipy.optimize import brentq
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import csv
@@ -108,44 +110,32 @@ target_y = np.log(target_T)
 for res in results:
     L = res['L']
     T = res['T_avg']
+
+    # Cubic spline interpolation on ln(T)
+    y = np.log(T)
+    cs = CubicSpline(L, y)
     
-    # We want to fit ln(T) = a * L + b
-    # Filter out the numerical noise floor at ~3e-6 which flattens the curves
-    valid = T > 5e-6
-    if np.sum(valid) < 2:
-        valid = T > min(T) # Fallback to all non-minimum points
+    def f(x):
+        return cs(x) - target_y
         
-    L_fit = L[valid]
-    y_fit = np.log(T[valid])
-    
-    if len(L_fit) == 2:
-        # Cannot compute meaningful covariance for 2 points
-        coeffs = np.polyfit(L_fit, y_fit, 1)
-        a, b = coeffs[0], coeffs[1]
-        var_a = var_b = cov_ab = 0.0
-    else:
-        coeffs, cov = np.polyfit(L_fit, y_fit, 1, cov=True)
-        a, b = coeffs[0], coeffs[1]
-        var_a = cov[0, 0]
-        var_b = cov[1, 1]
-        cov_ab = cov[0, 1]
-    
-    # Lc = (target_y - b) / a
-    Lc = (target_y - b) / a
-    
-    # Error propagation
-    if var_a > 0 and var_b > 0:
-        dLc_db = -1.0 / a
-        dLc_da = -(target_y - b) / (a**2)
-        var_Lc = (dLc_db**2) * var_b + (dLc_da**2) * var_a + 2 * dLc_da * dLc_db * cov_ab
-        Lc_err = np.sqrt(max(0, var_Lc))
-    else:
-        Lc_err = 0.0
-    
-    res['a'] = a
-    res['b'] = b
+    Lc = None
+    # Search for root in intervals
+    for i in range(len(L) - 1):
+        if f(L[i]) * f(L[i+1]) <= 0:
+            Lc = brentq(f, L[i], L[i+1])
+            break
+            
+    # If no root found, extrapolate linearly using the first or last two points
+    if Lc is None:
+        if f(L[0]) < 0: # all points below target
+            slope = (y[1] - y[0]) / (L[1] - L[0])
+            Lc = L[0] + (target_y - y[0]) / slope
+        else: # all points above target
+            slope = (y[-1] - y[-2]) / (L[-1] - L[-2])
+            Lc = L[-1] + (target_y - y[-1]) / slope
+
     res['Lc'] = Lc
-    res['Lc_err'] = Lc_err
+    res['cs'] = cs
 
 # ==========================================
 # 4. PLOTS & CSV EXPORT
@@ -155,7 +145,7 @@ with open('critical_distances.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(['Effective Mass (m0)', 'Folder', 'Critical Distance Lc (nm)', 'Error dLc (nm)', 'Fit Slope (a)', 'Fit Intercept (b)'])
     for res in results:
-        writer.writerow([res['mass'], res['folder'], res['Lc'], res['Lc_err'], res['a'], res['b']])
+        writer.writerow([res['mass'], res['folder'], res['Lc'], 'N/A', 'N/A', 'N/A'])
 
 # Plot 1: Combined Transmission vs Length
 plt.figure(figsize=(10, 6))
@@ -167,9 +157,9 @@ for i, res in enumerate(results):
     T = res['T_avg']
     plt.plot(L, T, marker='o', linestyle='', color=colors[i], markersize=5, label=f"m* = {res['mass']}")
     
-    # Plot the fit line as well over a slightly wider range
-    L_fit = np.linspace(min(L), max(max(L), res['Lc']*1.1), 100)
-    T_fit = np.exp(res['a'] * L_fit + res['b'])
+    # Plot the spline over the data range
+    L_fit = np.linspace(min(L), max(L), 200)
+    T_fit = np.exp(res['cs'](L_fit))
     plt.plot(L_fit, T_fit, linestyle='-', color=colors[i], alpha=0.5)
 
 plt.axhline(y=target_T, color='red', linestyle='--', label=f'Threshold (10^-4)')
@@ -186,10 +176,9 @@ plt.close()
 # Plot 2: Critical Distance vs Effective Mass
 masses = [res['mass'] for res in results]
 Lcs = [res['Lc'] for res in results]
-Lc_errs = [res['Lc_err'] for res in results]
 
 plt.figure(figsize=(8, 5))
-plt.errorbar(masses, Lcs, yerr=Lc_errs, fmt='o-', color='navy', capsize=5, capthick=1.5, markerfacecolor='red')
+plt.plot(masses, Lcs, marker='o', linestyle='-', color='navy', markerfacecolor='red')
 plt.title('Critical Transistor Length vs Effective Mass')
 plt.xlabel('Effective Mass (m_0)')
 plt.ylabel('Critical Distance L_c (nm)')
