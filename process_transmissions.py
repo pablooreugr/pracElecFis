@@ -119,10 +119,15 @@ for res in results:
         return cs(x) - target_y
         
     Lc = None
+    Lc_err = 0.0
     # Search for root in intervals
     for i in range(len(L) - 1):
         if f(L[i]) * f(L[i+1]) <= 0:
             Lc = brentq(f, L[i], L[i+1])
+            # Linear interpolation for error estimation
+            slope_linear = (y[i+1] - y[i]) / (L[i+1] - L[i])
+            Lc_linear = L[i] + (target_y - y[i]) / slope_linear
+            Lc_err = abs(Lc - Lc_linear)
             break
             
     # If no root found, extrapolate linearly using the first or last two points
@@ -133,8 +138,10 @@ for res in results:
         else: # all points above target
             slope = (y[-1] - y[-2]) / (L[-1] - L[-2])
             Lc = L[-1] + (target_y - y[-1]) / slope
+        Lc_err = 0.0 # Cannot reliably estimate interpolation error on extrapolation
 
     res['Lc'] = Lc
+    res['Lc_err'] = Lc_err
     res['cs'] = cs
 
 # ==========================================
@@ -145,7 +152,7 @@ with open('critical_distances.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(['Effective Mass (m0)', 'Folder', 'Critical Distance Lc (nm)', 'Error dLc (nm)', 'Fit Slope (a)', 'Fit Intercept (b)'])
     for res in results:
-        writer.writerow([res['mass'], res['folder'], res['Lc'], 'N/A', 'N/A', 'N/A'])
+        writer.writerow([res['mass'], res['folder'], res['Lc'], res['Lc_err'], 'N/A', 'N/A'])
 
 # Plot 1: Combined Transmission vs Length
 plt.figure(figsize=(10, 6))
@@ -176,9 +183,10 @@ plt.close()
 # Plot 2: Critical Distance vs Effective Mass
 masses = [res['mass'] for res in results]
 Lcs = [res['Lc'] for res in results]
+Lc_errs = [res['Lc_err'] for res in results]
 
 plt.figure(figsize=(8, 5))
-plt.plot(masses, Lcs, marker='o', linestyle='-', color='navy', markerfacecolor='red')
+plt.errorbar(masses, Lcs, yerr=Lc_errs, fmt='o-', color='navy', capsize=5, capthick=1.5, markerfacecolor='red')
 plt.title('Critical Transistor Length vs Effective Mass')
 plt.xlabel('Effective Mass (m_0)')
 plt.ylabel('Critical Distance L_c (nm)')
