@@ -32,7 +32,7 @@ def parse_mass_str(mass_str):
     except ValueError:
         return 0.0
 
-data_dir = 'data/MOSFET'
+data_dir = '../data/MOSFET'
 file_pattern = re.compile(r'(\d+(?:_\d+)?)\s*nm\.txt$', re.IGNORECASE)
 folder_pattern = re.compile(r'^(\d+)-06eV$')
 
@@ -147,8 +147,8 @@ for res in results:
 # ==========================================
 # 4. PLOTS & CSV EXPORT
 # ==========================================
-print("Writing critical_distances.csv ...")
-with open('critical_distances.csv', 'w', newline='') as f:
+print("Writing ../datos_csv/critical_distances.csv ...")
+with open('../datos_csv/critical_distances.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(['Effective Mass (m0)', 'Folder', 'Critical Distance Lc (nm)', 'Error dLc (nm)', 'Fit Slope (a)', 'Fit Intercept (b)'])
     for res in results:
@@ -177,7 +177,7 @@ plt.yscale('log')
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
-plt.savefig('combined_transmission.png', dpi=300)
+plt.savefig('../graficas/combined_transmission.png', dpi=300)
 plt.close()
 
 # Plot 2: Critical Distance vs Effective Mass
@@ -192,7 +192,7 @@ plt.xlabel('Effective Mass (m_0)')
 plt.ylabel('Critical Distance L_c (nm)')
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.tight_layout()
-plt.savefig('critical_distance_vs_mass.png', dpi=300)
+plt.savefig('../graficas/critical_distance_vs_mass.png', dpi=300)
 plt.close()
 
-print("Done! Check combined_transmission.png, critical_distance_vs_mass.png, and critical_distances.csv")
+print("Done! Check ../graficas/combined_transmission.png, ../graficas/critical_distance_vs_mass.png, and ../datos_csv/critical_distances.csv")

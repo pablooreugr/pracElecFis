@@ -5,7 +5,7 @@ from scipy.optimize import curve_fit
 import os
 
 # Load data
-csv_path = 'critical_distances.csv'
+csv_path = '../datos_csv/critical_distances.csv'
 df = pd.read_csv(csv_path)
 df.columns = [col.strip() for col in df.columns]
 
@@ -84,7 +84,7 @@ for i, (name, func) in enumerate(models.items()):
         print(f"Could not fit {name}: {e}")
 
 # Save results to CSV
-csv_out = 'regression_results.csv'
+csv_out = '../datos_csv/regression_results.csv'
 with open(csv_out, 'w') as f:
     f.write('Model,Parameter a,Error a,Parameter b,Error b,R_squared\n')
     for name, res in results.items():
@@ -104,5 +104,5 @@ plt.ylabel('Critical Distance $L_c$ (nm)', fontsize=12)
 plt.legend(fontsize=10)
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.tight_layout()
-plt.savefig('regression_analysis.png', dpi=300)
-print("Plot saved to regression_analysis.png")
+plt.savefig('../graficas/regression_analysis.png', dpi=300)
+print("Plot saved to ../graficas/regression_analysis.png")
