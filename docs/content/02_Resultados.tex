@@ -23,7 +23,7 @@ Para nuestro caso, simularemos el estado \textbf{OFF} del sistema, para poder de
 
 
 Una vez se tiene todo esto en cuenta, jugaremos con los parámetros de longitud, guardando en cada caso la transmisión frente a la energía obtenida por el simulador. 
-Se representan un par de ejemplos claramente diferenciables entre dos casos de masa efectiva distintas: 
+Se representan un par de ejemplos claramente diferenciables entre dos casos de masa efectiva: la más alta utilizada, y la más baja. Esto se hace para entender, a modo comparativo, cómo atraviesan la barrera en un caso u otro para la misma longitud. Se muestra en las figuras \ref{fig:TvsE_006m_5nm} y \ref{fig:TvsE_11m_5nm}.
 
 \begin{figure}[!ht]
     \centering
@@ -39,26 +39,25 @@ Se representan un par de ejemplos claramente diferenciables entre dos casos de m
     \label{fig:TvsE_11m_5nm}
 \end{figure}
 
-Ahora, para cada valor de masa efectiva, calculamos la transmisión media a partir de (INCLUIR FORMULA JULIO) para diferentes longitudes del canal. La longitud del canal variará entre $1$nm a $10$nm. \\
+Ahora, para cada valor de masa efectiva, calculamos la transmisión media a partir de (\ref{eq:teff} para diferentes longitudes del canal. La longitud del canal variará entre $1$nm a $10$nm. \\
 En total, se incluyen las curvas para 11 valores de masas efectivas distintas. Sus valores han sido determinados de forma arbitraria en el intervalo determinado, exceptuando la masa efectiva del Silicio ($m* = 0.19m_e$), dado que es el material más utilizado en la fabricación de transistores industriales. \footnote{Al usar un solo valor de masa efectiva, sin diferenciar las componentes del valle en el que se encuentra el máximo de un material específico, suponemos que el material se comporta de forma uniforme en la dirección de la simulación.}
 
-
+Por último, a partir de la interpolación entre datos utilizando un spline cúbuco, encontramos, para cada material, la longitud crítica para la cual se supera el límite de transmisión a partir de la cual deja de ser eficiente el transistor. Si representamos cómo varía esta longitud crítica en función de la masa efectiva escogida, podremos discutir sistemáticamente cuáles son los materiales más efectivos. Esto se recoge en la figura \ref{fig:Lcritica_masaef}.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{img/combined_transmission.png}
-    \caption{En el eje x se muestran los valores de longitud (en nanómetros), mientras que en el eje y, el coeficiente de transmisión media calculado a partir de REFERENCIA. Se muestra en la leyenda las masas efectiivas escogidas para cada curva. La unión entre los puntos de cada curva se hace mediante un proceso de interpolación por splines cúbicos. }
+    \caption{En el eje x se muestran los valores de longitud (en nanómetros), mientras que en el eje y, el coeficiente de transmisión media calculado a partir de la ecuación \ref{eq:tavg_approx}. Se muestra en la leyenda las masas efectivas escogidas para cada curva. La unión entre los puntos de cada curva se hace mediante un proceso de interpolación por splines cúbicos. }
     \label{fig:trans_media_variasmasas}
 \end{figure}
 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.65\textwidth]{img/regression_analysis.png}
-    \caption{En el eje x se muestran los valores de longitud (en nanómetros), mientras que en el eje y, el coeficiente de transmisión media calculado a partir de REFERENCIA. Se muestra en la leyenda las masas efectiivas escogidas para cada curva. La unión entre los puntos de cada curva se hace mediante un proceso de interpolación utilizando un polinomio de tercer grado entre cada par de puntos. }
+    \includegraphics[width=0.65\textwidth]{img/regression_analysis.png}y
+    \caption{En el eje x, la masa efectiva; en el eje y, la longitud crítica (en nanómetros), conseguida a partir de la interpolación entre los datos de longitud-transmisión media de la figura \ref{fig:trans_media_variasmasas}. Se incluyen varias curvas de ajuste sobre los datos, donde se indica de qué tipo es cada uno en la leyenda, así como el coeficiente de correlación de Pearson de cada uno que califica la bondad del ajuste.}
     \label{fig:Lcritica_masaef}
 \end{figure}
 
-Por último, a partir de la interpolación entre datos, encontramos, para cada material, la longitud crítica para la cual se supera el límite de transmisión a partir de la cual deja de ser eficiente el transistor. Si representamos cómo varía esta longitud crítica en función de la masa efectiva escogida, podremos discutir sistemáticamente cuáles son los materiales más efectivos. Esto se recoge en la \autoref{fig:Lcritica_masaef}.
 
 
