@@ -11,3 +11,36 @@ Por otro lado, si observamos en el caso \ref{fig:TvsE_11m_5nm}, cuando la energ�
 Sin embargo, para encontrar el punto exacto que se sitúa sobre el límite de transmisión, se ha utilizado un proceso de interpolación a partir de polinomio de grado 3 entre cada par de datos (\textit{spline cúbico}). Se ha escogido dicho spline para ser consistente con lo impuesto por la funcón de onda: esta y su derivada deben ser continuas en todo el espacio. En un polinomio cúbico, esto queda garantizado. \\
 
 En dicha gráfica \ref{fig:trans_media_variasmasas}, podemos observar además cómo el aumento de la masa efectiva hace que el transistor sea más eficiente a longitudes más pequeñas. Físicamente, esto se debe a que el coeficiente de penetración de la función de onda ($\kappa$) es proporcional a la raíz cuadrada de la masa efectiva \ref{eq:kappa}: una masa elevada provoca un decaimiento mucho más rápido de la cola de la función de onda dentro del canal, reduciendo la transparencia de la barrera. Por el contrario, materiales con masas efectivas bajas, aunque deseables por su alta movilidad, presentan una longitud crítica mucho mayor ($l_c \approx 7nm$), lo que evidencia el compromiso fundamental entre velocidad de conmutación y escalado físico en el límite de la Ley de Moore.
+
+\paragraph{}Una vez identificada esta dependendia directa entre la masa efeectiva y el coeficiente de transmisión, calculamos la longitud crítica 
+
+
+Vemos que para el resultado final de la ley empírica de potencias que hemos escogido (\ref{eq:ley_empirica_final}), este se asemeja con muchísimo el valor de la raiz cuadrada de la masa efectiva, habiendo solo un error relativo del 4\%. Si vemos el párametro de $R^2$ de la regresión, este es de 0.9992, lo que muestra que el modelo se ajusta casi perfectamente a los datos obtenidos. Esto confirma la relación de dependencia propuesta entre la longitud crítica y la masa efectiva, y nos da una expresión empírica para predecir la longitud crítica a partir de la masa efectiva del material utilizado en el transistor.
+
+
+\subsubsection*{Comparación con el silicio}
+
+Si comparamos el resultado obtenido con la masa efectiva del silicio ($m^* = 0.19 m_e$), obtenemos una longitud crítica de $L_c = 4.3$ nm, lo que muestra que el silicio es un material adecuado para la fabricación de transistores con longitudes de canal de hasta 4.3 nm. Sabemos que actualmente los chips de vanguardia operan muy cerca de estas dimensiones \footnote{Según el proceso de fabricación, por ejemplo, el proceso de 5 nm de TSMC tiene una longitud de canal efectiva que roza estos límites físicos.}, lo que demuestra que el silicio se encuentra en el límite de su eficiencia debido al incremento exponencial de las corrientes de fuga por efecto túnel. Por tanto, para seguir reduciendo la longitud del canal, será necesario buscar materiales con masas efectivas mayores en la dirección de transporte para suprimir la probabilidad de túnel, o bien adoptar nuevas arquitecturas de canal ultradelgado (como materiales 2D). \cite{wang2003tunneling}
+
+\subsubsection*{Entonces, ¿como seguir cumpliendo la ley de Moore?}
+Sabemos que la ley de Moore no es una verdadera ley, sino una idea (demasiado simple) que impuso Moore a la industria de los chips y lleva subyugandolo desde los años 70. Esta ley nos dice que cada dos años se duplicaría la densidad de chips, lo que se ha cumplido durante décadas gracias a la reducción constante de la longitud del canal. Sin embargo, como hemos visto, esta reducción no puede continuar indefinidamente debido a los límites físicos impuestos por el efecto túnel. \\
+
+Si quisiecemos hacer la mitad de pequeño el canal con silicio, los electrones tunelearían y no podríamos controlar el flujo de corriente, lo que haría que el transistor no funcione correctamente.
+
+Pues ahora imaginemos que somos ingenieros de diseño de chips y queremos seguir cumpliendo la ley de Moore. Para ello, tenemos varias opciones:
+\begin{itemize}
+    \item \textbf{Materiales con mayor masa efectiva:} Podríamos buscar materiales con masas efectivas mayores en la dirección de transporte, lo que reduciría la probabilidad de túnel y permitiría seguir reduciendo la longitud del canal sin que las corrientes de fuga sean incontrolables. Sin embargo, esto podría afectar negativamente la movilidad de los portadores y, por tanto, el rendimiento del transistor.
+    \item \textbf{Arquitecturas de canal ultradelgado:} Otra opción sería adoptar nuevas arquitecturas de canal ultradelgado, como  materiales 2D (por ejemplo, grafeno o disulfuro de molibdeno), que podrían ofrecer un mejor control electrostático y reducir las corrientes de fuga. Sin embargo, esto requeriría una reingeniería completa de los procesos de fabricación y podría presentar desafíos en términos de integración con la tecnología existente. \cite{radisavljevic2011mos2}
+    \item \textbf{Tecnologías de apilamiento 3D:} En lugar de seguir reduciendo la longitud del canal, podríamos optar por apilar transistores en tres dimensiones, lo que permitiría aumentar la densidad de chips sin necesidad de reducir la longitud del canal. Esta tecnología ya se está explorando con el desarrollo de memorias 3D NAND y podría ser una solución viable para seguir cumpliendo la ley de Moore. \cite{kuhn2012ultimate}
+\end{itemize}
+
+Nosotros, para hacer uso de nuestra ecuación, usaremos la primera. Si redugésemos a la mitad la distancia crítica, ($L_c/2 = 2.15$ nm), podríamos calcular la masa efectiva necesaria para que el transistor siga funcionando correctamente. Para ello, despejamos $m^*$ de la ecuación \ref{eq:ley_empirica_final} y obtenemos una masa efecita de $0.82 m_e$. Entonces busquemos un material, como por ejemplo el fosfuro de galio (GaP), que tiene una masa efectiva de $0.85 m_e$ \cite{vurgaftman2001band} en la dirección de transporte, lo que lo convierte en un candidato prometedor para la fabricación de transistores con longitudes de canal de hasta 2.15 nm, permitiendo así seguir cumpliendo la ley de Moore. Sabemos que cuesta 20 veces mas este material, por lo que si miramos un procesador potente ahora mismo, como por ejemplo una tarjeta gráfica 5090, este tiene un coste de 4050 euros. Si quisieramos hacerla con GaP, el coste sería de 81000 euros. Puede parecer caro, pero es una entrada en un piso en Madrid, entonces los jóvenes actuales si trabajásemos lo podríamos conseguir, ¿no?.  
+
+\subsubsection*{El problema del transporte}
+Otro problema real es el siguiente, la movilidad de un electrón tiene la siguiente expresión:
+
+\begin{equation}
+    \mu = \frac{q \tau}{m^*}
+\end{equation}
+
+Entonces nos encontramos con el siguiente dilema, si queremos reducir la longitud del canal, necesitamos un material con una masa efectiva mayor para reducir el efecto túnel, pero esto a su vez reduce la movilidad de los portadores, lo que podría afectar negativamente el rendimiento del transistor. Por tanto, es necesario encontrar un equilibrio entre la masa efectiva y la movilidad para diseñar transistores que puedan seguir cumpliendo la ley de Moore sin sacrificar el rendimiento. Entonces la dificultad radica en encontrar materiales que tengan una masa efectiva alta pero que a su vez tengan una movilidad aceptable. \cite{sze2006physics}

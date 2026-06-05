@@ -21,6 +21,7 @@ Para nuestro caso, simularemos el estado \textbf{OFF} del sistema, para poder de
     \item En cuanto a la longitud de la puerta L, esta es variable. 
 \end{itemize}
 
+Se ha establecido una longitud total máxima para el sistema de 50 nm para asegurar que la simulación se mantenga dentro del régimen de transporte balístico, donde la probabilidad de eventos de dispersión (scattering) es despreciable. Esto permite modelar el canal como una región donde el electrón conserva su energía y momento, desplazando la disipación de calor hacia las regiones de fuente y drenador (de 20 nm cada una), las cuales actúan como reservorios térmicos en equilibrio.
 
 Una vez se tiene todo esto en cuenta, jugaremos con los parámetros de longitud, guardando en cada caso la transmisión frente a la energía obtenida por el simulador. 
 Se representan un par de ejemplos claramente diferenciables entre dos casos de masa efectiva: la más alta utilizada, y la más baja. Esto se hace para entender, a modo comparativo, cómo atraviesan la barrera en un caso u otro para la misma longitud. Se muestra en las figuras \ref{fig:TvsE_006m_5nm} y \ref{fig:TvsE_11m_5nm}.
@@ -52,12 +53,53 @@ Por último, a partir de la interpolación entre datos utilizando un spline cúb
 \end{figure}
 
 
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{img/regression_analysis.png}y
     \caption{En el eje x, la masa efectiva; en el eje y, la longitud crítica (en nanómetros), conseguida a partir de la interpolación entre los datos de longitud-transmisión media de la figura \ref{fig:trans_media_variasmasas}. Se incluyen varias curvas de ajuste sobre los datos, donde se indica de qué tipo es cada uno en la leyenda, así como el coeficiente de correlación de Pearson de cada uno que califica la bondad del ajuste.}
     \label{fig:Lcritica_masaef}
 \end{figure}
+
+
+Los resultados a las distintas regresiones se presentan en la siguiente tabla:
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados del análisis de regresión para la distancia crítica $L_c$ frente a la masa efectiva.}
+    \label{tab:regression_results}
+    \begin{tabular}{|l|c|c|c|}
+        \toprule
+        \textbf{Modelo} & \textbf{Parámetro $a$ (nm)} & \textbf{Parámetro $b$ (adim / nm)} & \textbf{$R^2$} \\
+        \midrule
+        Ley de Potencias   & $1.9173 \pm 0.0025$   & $-0.47684 \pm 0.00063$ & $0.9992$ \\
+        Exponencial        & $7.6168 \pm 0.0086$   & $-1.7569 \pm 0.0025$   & $0.8452$ \\
+        Inv. Raíz Cuadrada & $1.7571 \pm 0.0028$   & $0.1719 \pm 0.0049$    & $0.9986$ \\
+        Inversa            & $0.33557 \pm 0.00053$ & $1.8215 \pm 0.0029$    & $0.9526$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Donde nos quedaremos con la ley de potencias, ya que se puede comparar muy facilmente con la expresión teórica (\ref{eq:lym*_final}), y el valor de $b$ se aproxima a -0.5, lo que confirma la relación de dependencia propuesta.
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación entre el valor experimental y teórico para el exponente $b$ del modelo de ley de potencias.}
+    \label{tab:error_relativo_b}
+    \begin{tabular}{|c|c|c|c|c|}
+        \toprule
+        \textbf{Parámetro} & \textbf{Valor Experimental} & \textbf{Valor Teórico} & \textbf{Error Absoluto} & \textbf{Error Relativo} \\
+        \midrule
+        $b$ & $-0.47684 \pm 0.00063$ & $-0.5$ & $0.02316$ & $4.63\%$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Donde la expresión final que escogeremos como ley empírica es la siguiente:
+
+\begin{equation}
+    \label{eq:ley_empirica_final}
+    L_c = 1.9173 \cdot (m^*)^{-0.47684}
+\end{equation}
 
 
 
