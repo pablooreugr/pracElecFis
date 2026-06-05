@@ -8,9 +8,9 @@ Para la realización del proyecto, se ha usado la herramienta de 'Piece-Wise Con
 
 En este proyecto, se busca transponer un dispositivo MOSFET planar a este simulador con el objetivo de estudiar cuál es la longitud crítica ($L_c$) de un material para la cual los efectos de tunelización cuánticos hacen ineficiente este dispositivo. \\
 Dado que este se trata de un sistema 2D, uno de los retos es determinar cómo ajustar los parámetros para poder estudiarlo como un modelo 1D en el simulador. \\
-La justificación técnica para tratar este sistema como un modelo 1D se basa en la separabilidad del potencial electrostático.  esta aproximación, el simulador modela el perfil del borde de la banda de conducción a lo largo de la línea de corriente principal, integrando los efectos de confinamiento de las otras dimensiones en la altura efectiva de la barrera
+La justificación técnica para tratar este sistema como un modelo 1D se basa en la separabilidad del potencial electrostático. En esta aproximación, el simulador modela el perfil del borde de la banda de conducción a lo largo de la línea de corriente principal, integrando los efectos de confinamiento de las otras dimensiones en la altura efectiva de la barrera
 
-Un dispositivo MOSFET cuenta con tres contactos: fuente, canal, y drenador. El canal es la región del dispositivo que actúa como un puente conductor para los electrones (o huecos) entre los contactos de fuente (source) y drenador (drain). Se comporta como una barrera de potencial controlada de forma externa, la cual es variable dependiendo del estado en el que se encuentre el transistor. \\
+Un dispositivo MOSFET cuenta con tres contactos\footnote{Profe sabemos que en verdad son cuatro pero queríamos enfadarte.}: fuente, canal, y drenador. El canal es la región del dispositivo que actúa como un puente conductor para los electrones (o huecos) entre los contactos de fuente (source) y drenador (drain). Se comporta como una barrera de potencial controlada de forma externa, la cual es variable dependiendo del estado en el que se encuentre el transistor. \\
 
 Para nuestro caso, simularemos el estado \textbf{OFF} del sistema, para poder determinar para qué longitud del transistor ocurre el paso de electrones cuando se apaga el dispositvo. Este estado se entiende de forma sencilla como una barrera de potencial, impuesta por el canal y situada por encima de los niveles de la fuente y drenador, que simula la banda de conducción. Los parámetros a tener en cuenta en el sistema son: 
 
@@ -43,7 +43,8 @@ Se representan un par de ejemplos claramente diferenciables entre dos casos de m
 Ahora, para cada valor de masa efectiva, calculamos la transmisión media a partir de (\ref{eq:teff} para diferentes longitudes del canal. La longitud del canal variará entre $1$nm a $10$nm. \\
 En total, se incluyen las curvas para 11 valores de masas efectivas distintas. Sus valores han sido determinados de forma arbitraria en el intervalo determinado, exceptuando la masa efectiva del Silicio ($m* = 0.19m_e$), dado que es el material más utilizado en la fabricación de transistores industriales. \footnote{Al usar un solo valor de masa efectiva, sin diferenciar las componentes del valle en el que se encuentra el máximo de un material específico, suponemos que el material se comporta de forma uniforme en la dirección de la simulación.}
 
-Por último, a partir de la interpolación entre datos utilizando un spline cúbuco, encontramos, para cada material, la longitud crítica para la cual se supera el límite de transmisión a partir de la cual deja de ser eficiente el transistor. Si representamos cómo varía esta longitud crítica en función de la masa efectiva escogida, podremos discutir sistemáticamente cuáles son los materiales más efectivos. Esto se recoge en la figura \ref{fig:Lcritica_masaef}.
+Por último, a partir de la interpolación entre datos utilizando un spline cúbuco, encontramos, para cada material, la longitud crítica para la cual se supera el límite de transmisión a partir de la cual deja de ser eficiente el transistor. Múltiples gráficas para diferentes masas efectivas se muestran en la figura \ref{fig:trans_media_variasmasas}. \\
+Si representamos cómo varía esta longitud crítica en función de la masa efectiva escogida, podremos discutir sistemáticamente cuáles son los materiales más efectivos. Esto se recoge en la figura \ref{fig:Lcritica_masaef}, donde se incluyen diferentes curvas de ajuste para discutir cuál es la mejor ley empírica que describe la relación entre la longitud crítica y la masa efectiva.\\
 
 \begin{figure}[!ht]
     \centering
@@ -71,15 +72,15 @@ Los resultados a las distintas regresiones se presentan en la siguiente tabla:
         \toprule
         \textbf{Modelo} & \textbf{Parámetro $a$ (nm)} & \textbf{Parámetro $b$ (adim / nm)} & \textbf{$R^2$} \\
         \midrule
-        Ley de Potencias   & $1.9173 \pm 0.0025$   & $-0.47684 \pm 0.00063$ & $0.9992$ \\
-        Exponencial        & $7.6168 \pm 0.0086$   & $-1.7569 \pm 0.0025$   & $0.8452$ \\
-        Inv. Raíz Cuadrada & $1.7571 \pm 0.0028$   & $0.1719 \pm 0.0049$    & $0.9986$ \\
-        Inversa            & $0.33557 \pm 0.00053$ & $1.8215 \pm 0.0029$    & $0.9526$ \\
+        Ley de Potencias $(a\cdot x^b)$   & $1.9173 \pm 0.0025$   & $-0.47684 \pm 0.00063$ & $0.9992$ \\
+        Exponencial $(a\cdot e^{bx})$       & $7.6168 \pm 0.0086$   & $-1.7569 \pm 0.0025$   & $0.8452$ \\
+        Inv. Raíz Cuadrada $(a/\sqrt{x}+b)$ & $1.7571 \pm 0.0028$   & $0.1719 \pm 0.0049$    & $0.9986$ \\
+        Inversa   $(a/x+b)$         & $0.33557 \pm 0.00053$ & $1.8215 \pm 0.0029$    & $0.9526$ \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-Donde nos quedaremos con la ley de potencias, ya que se puede comparar muy facilmente con la expresión teórica (\ref{eq:lym*_final}), y el valor de $b$ se aproxima a -0.5, lo que confirma la relación de dependencia propuesta.
+Donde nos quedaremos con la ley de potencias, ya que se puede comparar muy facilmente con la expresión teórica (\ref{eq:lym*}), y el valor de $b$ se aproxima a -0.5, lo que confirma la relación de dependencia propuesta.
 
 \begin{table}[H]
     \centering
