@@ -2,8 +2,9 @@
 
 \section{Análisis}
 
+\subsection{Dependencia del coeficiente de transmisión espacial con la masa efectiva. Aplicación insdustrial de los MOSFET a $T=300K$.}
 \paragraph{} En primer lugar, analizaremos de forma cualitativa cómo varía la transmisión con la energía para los casos mostrados en \ref{fig:TvsE_006m_5nm} y \ref{fig:TvsE_11m_5nm}, correspondientes a \textbf{$m* = 0.06 m_e$} y \textbf{$m* = 1.1 m_e$}, respectivamente. \\ 
-Lo primero que salta a la vista es la diferencia entre los órdenes de magnitud del eje vertical. Para un valor de 0.2eV, el primer caso muestra una transmisión de $~10^-3$, mientras que para la misma energía, el segundo caso muestra una transmisión de $~10^-14$, con lo que hay once órdenes de magnitud entre ambos casos. Esto muestra cómo para una longitud pequeña de un transistor ($L=5$nm) la masa efectiva del material afecta de forma exponencial al comportamiento del transistor, tal y como podemos esperar según \ref{eq:tunneling}. 
+Lo primero que salta a la vista es la diferencia entre los órdenes de magnitud del eje vertical. Para un valor de 0.2eV, el primer caso muestra una transmisión de $~10^{-3}$, mientras que para la misma energía, el segundo caso muestra una transmisión de $~10^{-14}$, con lo que hay once órdenes de magnitud entre ambos casos. Esto muestra cómo para una longitud pequeña de un transistor ($L=5$nm) la masa efectiva del material afecta de forma exponencial al comportamiento del transistor, tal y como podemos esperar según \ref{eq:tunneling}. 
 
 Por otro lado, si observamos en el caso \ref{fig:TvsE_11m_5nm}, cuando la energía del  electrón en la fuente supera la de la barrera con el canal ($E>0.6$eV), es cuando se alcanza la transmisión máxima (como es de esperar, ya que el electrón tiene la energía suficiente para saltar la barrrera). Sin embargo, notamos que presenta oscilaciones en torno a dicho valor. Esto muestra el comportamiento de interferencia de la onda consigo misma cuando se refleja al atravesar la barrera. 
 
@@ -44,3 +45,25 @@ Otro problema real es el siguiente, la movilidad de un electrón tiene la siguie
 \end{equation}
 
 Entonces nos encontramos con el siguiente dilema, si queremos reducir la longitud del canal, necesitamos un material con una masa efectiva mayor para reducir el efecto túnel, pero esto a su vez reduce la movilidad de los portadores, lo que podría afectar negativamente el rendimiento del transistor. Por tanto, es necesario encontrar un equilibrio entre la masa efectiva y la movilidad para diseñar transistores que puedan seguir cumpliendo la ley de Moore sin sacrificar el rendimiento. Entonces la dificultad radica en encontrar materiales que tengan una masa efectiva alta pero que a su vez tengan una movilidad aceptable. \cite{sze2006physics}
+
+\subsection{Efectos de la distribución energética a la temperatura crítica.}
+
+En primer lugar, para el estudio de esta temperatura límite, es importante destacar que no sólo debemos considerar el tunelamiento cuántico como el ocasionante principal de la corriente de fuga. \footnote{Aunque no se haya hablado de corriente, decir esto es proporcional a hablar de transmisión, ya que son dos conceptos directamente proporcionales entre sí.}
+En este marco de temperatura alta ($T = 445K = 172 ^o C$) es necesario considerar la energía térmica $k_B T$. Debido al ensanchamiento de la función de Fermi-Dirac a altas temperaturas, hay un porcentaje de electrones mucho mayor que podrá saltaR la barrera sólo con su energía térmica de forma que $E > V_0$, sin importar la longitud del canal, como observamos en el suelo térmico (límite asintótico de transmisión) de la \autoref{fig:T445K_transmission}. 
+
+
+Una observación fundamental es que, al tener cuenta el límite térmico, la longitud crítica de los materiales ya no es la misma, dado que se añade un efecto extra al salto por efecto túnel. Si observamos el caso del silicio (segundo punto hacia la derecha, $m* = 0.19 m_e$), en el régimen de temperatura ambiente \ref{fig:Lcritica_masaef}, su l$l_c~4nm$, mientras que a $T_c$, podemos ver en \ref{fig:T445K_Lcritica_masaef} que ahora $l_c ~ 6nm$. Este cambio implica que habría que tener en cuenta el factor de energía térmica al considerar temperaturas altas, lo que representa un obstáculo insalvable para continuar con el escalado de Moore en entornos de alta temperatura o baja disipación, ya que no solo no podemos reducir el tamaño debido al tunelamiento, sino que la disipación de potencia (lo cual eleva la temperatura) obliga a alargar el canal para evitar fugas térmicas. 
+
+El objetivo de plantearnos cuál sería el límite térmico de un transistor con las características que hemos encontrado era ver si estos podían ser utilizados en misiones espaciales, o tenían alguna restricción más a tener en cuenta. \\
+
+En el ámbito aeroespacial, el estándar definido por los programas de calificación militar (como los protocolos NEPP de la NASA \cite{nepp2021cots}) establece un rango operativo típico de hasta $125^o C$, en el que se tienen en cuenta efectos no solo de temperatura extrema sino también de radiación ionizante o nula disipación del calor debido al vacío espacial. En este contexto, el suelo térmico encontrado para los materiales que hemos visto hace que el uso de estos materiales sea inaceptable en la industria espacial, ya que independientemente de su longitud, se encuentran sobre el límite de ineficiencia por tunelamiento cuántico.\ref{fig:T445K_transmission} \\
+
+Dado que el margen desde los $125^o C$ hasta $173^o C$ no es mucho (a efectos espaciales) y que no estamos teniendo en cuenta en esta temperatura crítica otras variables más complejas como la radiación, podemos establecer con seguridad que los materiales propuestos no podrían ser utilizados en el espacio. \\
+Esta demostración empírica es especialmente destacable por el hecho de que el Silicio alcanza sus límites físicos de operación segura, con lo que se requiere el uso de materiales con mayor resistencia a la energía térmica (lo que se traduce en un gap mucho mayor del material) mucho más caros.\cite{vurgaftman2001band} Este es uno es los motivos por los que las misiones espaciales son tan limitadas y requieren una cantidad de recursos económicos exorbitante.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/memeTc.png}
+    \caption{Situación real promedio de un físico/ingeniero de diseño de chips al enfrentarse a la ley de Moore y a los límites físicos impuestos por el efecto túnel y la energía térmica.}
+    \label{fig:memeTc}
+\end{figure}

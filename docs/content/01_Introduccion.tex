@@ -11,10 +11,17 @@ el tamaño de los transistores y, por tanto, la cantidad de transistores en un c
 
 En este contexto, la simulación de dispositivos electrónicos a escala nanométrica se ha convertido en una herramienta esencial para comprender y predecir su comportamiento.
 En esta práctica, nos enfocaremos en la simulación de transistores MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistor) utilizando 
-la herramienta de simulación \cite{agarwal2008pcpbt}. Esta herramienta nos permite simular una barrera de potencial en un circuito y nos ofrece la 
+la herramienta de simulación \cite{nanohub_pcpbt}. Esta herramienta nos permite simular una barrera de potencial en un circuito y nos ofrece la 
 distribución en energía de la transmisión de electrones a través de la barrera. Gracias a esta función de transmisión en función de energía, podemos 
-calcular una transmisión efectiva, que es una medida de la probabilidad de que los electrones atraviesen la barrera. Podemos usar la distribución de Fermi-Dirac f(E)
-en el source y el drain para ponderar la función de transmisión.\\
+calcular una transmisión efectiva, que es una medida de la probabilidad de que los electrones atraviesen la barrera. \\
+
+Para conocer la probabilidad de ocupación de un nivel, se sigue la distribución de Fermi-Dirac, la cual se define como:
+\begin{equation}
+    \label{eq:fermi_dirac}
+    f(E) = \frac{1}{e^{(E - \mu)/kT} + 1}
+\end{equation}
+Donde $E$ es la energía del estado, $\mu$ es el potencial químico (o nivel de Fermi), $k$ es la constante de Boltzmann, y $T$ es la temperatura absoluta. Esta función describe la probabilidad de que un estado de energía $E$ esté ocupado por un electrón a una temperatura dada. En el contexto de la simulación de transistores, la distribución de Fermi-Dirac se utiliza para ponderar la función de transmisión, lo que nos permite calcular la corriente de fuga a través de la barrera de potencial.
+
 La transmisión efectiva se calcula según la siguiente fórmula:
 \begin{equation}
     \label{eq:teff}

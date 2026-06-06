@@ -11,7 +11,7 @@ import csv
 # ==========================================
 # 1. PARAMETERS & FUNCTIONS
 # ==========================================
-T_temp = 300.0         # Temperature in Kelvin
+T_temp = 445.0         # Temperature in Kelvin
 mu_S   = 0.35          # Source Fermi level (eV)
 mu_D   = 0.15          # Drain Fermi level (eV)
 kB     = 8.61733326e-5 # Boltzmann constant (eV/K)
@@ -32,7 +32,7 @@ def parse_mass_str(mass_str):
     except ValueError:
         return 0.0
 
-data_dir = '../data/MOSFET'
+data_dir = 'data/MOSFET'
 file_pattern = re.compile(r'(\d+(?:_\d+)?)\s*nm\.txt$', re.IGNORECASE)
 folder_pattern = re.compile(r'^(\d+)-06eV$')
 
@@ -148,7 +148,7 @@ for res in results:
 # 4. PLOTS & CSV EXPORT
 # ==========================================
 print("Writing ../datos_csv/critical_distances.csv ...")
-with open('../datos_csv/critical_distances.csv', 'w', newline='') as f:
+with open(f'datos_csv/critical_distances_T{T_temp}.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(['Effective Mass (m0)', 'Folder', 'Critical Distance Lc (nm)', 'Error dLc (nm)', 'Fit Slope (a)', 'Fit Intercept (b)'])
     for res in results:
@@ -169,15 +169,15 @@ for i, res in enumerate(results):
     T_fit = np.exp(res['cs'](L_fit))
     plt.plot(L_fit, T_fit, linestyle='-', color=colors[i], alpha=0.5)
 
-plt.axhline(y=target_T, color='red', linestyle='--', label=f'Umbral (10^-4)')
-plt.title('Transmisión Media vs Longitud del Transistor para varias Masas Efectivas')
+plt.axhline(y=target_T, color='red', linestyle='--', label='Umbral (10^-4)')
+plt.title(f'Transmisión Media vs Longitud del Transistor para varias Masas Efectivas (T={T_temp}K)')
 plt.xlabel('Longitud (nm)')
 plt.ylabel('Transmisión Media (T_avg)')
 plt.yscale('log')
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
-plt.savefig('../graficas/combined_transmission.png', dpi=300)
+plt.savefig(f'graficas/combined_transmission_T{T_temp}.png', dpi=300)
 plt.close()
 
 # Plot 2: Critical Distance vs Effective Mass
@@ -186,13 +186,21 @@ Lcs = [res['Lc'] for res in results]
 Lc_errs = [res['Lc_err'] for res in results]
 
 plt.figure(figsize=(8, 5))
-plt.errorbar(masses, Lcs, yerr=Lc_errs, fmt='o-', color='navy', capsize=5, capthick=1.5, markerfacecolor='red')
-plt.title('Longitud Crítica del Transistor vs Masa Efectiva')
+
+# AÑADIDO: Atributo 'label' para detallar qué son los puntos y el error
+plt.errorbar(masses, Lcs, yerr=Lc_errs, fmt='o-', color='navy', capsize=5, capthick=1.5, markerfacecolor='red', 
+             label='Puntos: Longitud crítica estimada\nBarras: Error de interpolación')
+
+plt.title(f'Longitud Crítica del Transistor vs Masa Efectiva para T={T_temp}K')
 plt.xlabel('Masa Efectiva (m_0)')
 plt.ylabel('Distancia Crítica L_c (nm)')
 plt.grid(True, linestyle='--', alpha=0.6)
+
+# AÑADIDO: Llamada a legend() para visualizar la etiqueta
+plt.legend(loc='best') 
+
 plt.tight_layout()
-plt.savefig('../graficas/critical_distance_vs_mass.png', dpi=300)
+plt.savefig(f'graficas/critical_distance_vs_mass_T{T_temp}.png', dpi=300)
 plt.close()
 
-print("Done! Check ../graficas/combined_transmission.png, ../graficas/critical_distance_vs_mass.png, and ../datos_csv/critical_distances.csv")
+print(f"Done! Check 'graficas/combined_transmission_T{T_temp}.png', 'graficas/critical_distance_vs_mass_T{T_temp}.png', and 'datos_csv/critical_distances_T{T_temp}.csv'")

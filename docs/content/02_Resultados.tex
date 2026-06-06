@@ -23,6 +23,8 @@ Para nuestro caso, simularemos el estado \textbf{OFF} del sistema, para poder de
 
 Se ha establecido una longitud total máxima para el sistema de 50 nm para asegurar que la simulación se mantenga dentro del régimen de transporte balístico, donde la probabilidad de eventos de dispersión (scattering) es despreciable. Esto permite modelar el canal como una región donde el electrón conserva su energía y momento, desplazando la disipación de calor hacia las regiones de fuente y drenador (de 20 nm cada una), las cuales actúan como reservorios térmicos en equilibrio.
 
+
+\subsection{Régimen estándar (T = 300K)}
 Una vez se tiene todo esto en cuenta, jugaremos con los parámetros de longitud, guardando en cada caso la transmisión frente a la energía obtenida por el simulador. 
 Se representan un par de ejemplos claramente diferenciables entre dos casos de masa efectiva: la más alta utilizada, y la más baja. Esto se hace para entender, a modo comparativo, cómo atraviesan la barrera en un caso u otro para la misma longitud. Se muestra en las figuras \ref{fig:TvsE_006m_5nm} y \ref{fig:TvsE_11m_5nm}.
 
@@ -54,7 +56,7 @@ Si representamos cómo varía esta longitud crítica en función de la masa efec
 \end{figure}
 
 
-\begin{figure}[H]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=0.65\textwidth]{img/regression_analysis.png}y
     \caption{En el eje x, la masa efectiva; en el eje y, la longitud crítica (en nanómetros), conseguida a partir de la interpolación entre los datos de longitud-transmisión media de la figura \ref{fig:trans_media_variasmasas}. Se incluyen varias curvas de ajuste sobre los datos, donde se indica de qué tipo es cada uno en la leyenda, así como el coeficiente de correlación de Pearson de cada uno que califica la bondad del ajuste.}
@@ -64,7 +66,7 @@ Si representamos cómo varía esta longitud crítica en función de la masa efec
 
 Los resultados a las distintas regresiones se presentan en la siguiente tabla:
 
-\begin{table}[H]
+\begin{table}[!ht]
     \centering
     \caption{Resultados del análisis de regresión para la distancia crítica $L_c$ frente a la masa efectiva.}
     \label{tab:regression_results}
@@ -82,7 +84,7 @@ Los resultados a las distintas regresiones se presentan en la siguiente tabla:
 
 Donde nos quedaremos con la ley de potencias, ya que se puede comparar muy facilmente con la expresión teórica (\ref{eq:lym*}), y el valor de $b$ se aproxima a -0.5, lo que confirma la relación de dependencia propuesta.
 
-\begin{table}[H]
+\begin{table}[!ht]
     \centering
     \caption{Comparación entre el valor experimental y teórico para el exponente $b$ del modelo de ley de potencias.}
     \label{tab:error_relativo_b}
@@ -101,6 +103,30 @@ Donde la expresión final que escogeremos como ley empírica es la siguiente:
     \label{eq:ley_empirica_final}
     L_c = 1.9173 \cdot (m^*)^{-0.47684}
 \end{equation}
+
+\subsection{Régimen de excitación térmica y temperatura crítica}
+
+Dado que la temperatura es un factor clave de eficiencia en los transistores, debido a su dependencia directa en la función de distribución de Fermi-Dirac \ref{eq:fermi_dirac}, podemos encontrar un valor de temperatura crítico: como observamos en el caso de la temperatura ambiente \ref{fig:trans_media_variasmasas}, a partir de una longitud según la masa efectiva del transistor, todos tienden a un valor asintótico de la transmisión media. \\
+El objetivo es encontrar para qué temperatura dicho valor asintótico corresponde a la línea de transmisión máxima permitida ($10^{-4}$). La temperatura para la que esto ocurra, será la máxima soportada por los transistores de dichas $m*$. Como es de esperar, cambiará también la longitud crítica esperada en cada caso, pues estamos desplazando hacia arriba la curva. Este desplazamiento supone un factor a tener en cuenta en la fabricación del transistor en función de la finalidad que tenga el dispositivo. Será especialmente importante para casos de transistores utilizados en dispositivos espaciales. 
+
+Probando entonces con varios valores de temperatura, un valor encontrado para el que ocurre lo que buscamos es $T = 445K$, como se puede ver en la \autoref{fig:T445K_transmission}. 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/combined_transmission_T445.0.png}
+    \caption{Longitud del canal (en nanómetros) frente a la transmisión media, para diferentes valores de masa efectiva, a una temperatura de $T=445$K. Se muestra en la leyenda las masas efectivas escogidas para cada curva. La unión entre los puntos de cada curva se hace mediante un proceso de interpolación por splines cúbicos. }
+    \label{fig:T445K_transmission}
+\end{figure}
+
+
+Una vez encontrada la temperatura crítica donde la efectividad de los transistores es límite al aumento de cualquier longitud a partir de $L_c$, vemos cuál es dicha longitud crítica en función de la masa en la \autoref{fig:T445K_Lcritica_masaef}. 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/critical_distance_vs_mass_T445.0.png}
+    \caption{En el eje x, la masa efectiva; en el eje y, la longitud crítica (en nanómetros), conseguida a partir de la interpolación entre los datos de longitud-transmisión media de la figura \ref{fig:T445K_transmission}. Las barras de error de cada punto se han calculado como la diferencia de los valores interpolados mediante un spline lineal y uno cúbico para $l<l_c$ (pues antes de la longitud crítica, la tendencia de decaimiento es lineal, considerando que el eje y está en escala logarítmica). }
+    \label{fig:T445K_Lcritica_masaef}   
+\end{figure}
 
 
 

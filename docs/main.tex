@@ -91,7 +91,9 @@ GRADO EN F\'ISICA
 \begin{tabular}{l}
 Física Electrónica
 \\[1.5ex]
-\LARGE\bf Análisis de la longitud crítica de un transistor en función de la masa efectiva.
+\LARGE\bf Determinación computacional de la longitud \\
+\LARGE\bf y temperatura críticas en nano-transistores \\
+\LARGE\bf en función de su masa efectiva.
 \end{tabular}
 %
 \vfill
@@ -112,12 +114,14 @@ Presentado por:
 {\bf Resumen}
 \bigskip
 
-\begin{minipage}{0.8\linewidth}
+\begin{minipage}{0.9\linewidth}
 La continua miniaturización de transistores MOSFET, pilar de la Ley de Moore, se enfrenta a límites físicos fundamentales debido a efectos cuánticos, principalmente la corriente de fuga por efecto túnel. En este trabajo, se estudia y cuantifica la relación entre la longitud crítica del canal ($L_c$) —la longitud mínima antes de que el efecto túnel domine— y la masa efectiva ($m^*$) del material semiconductor.
 
 Mediante el simulador 'Piece-Wise COnstant Potential Barriers Tool' (PCPBT), se modeló un transistor como una barrera de potencial unidimensional. Se calculó la transmisión media para un rango de longitudes de canal (1-10 nm) y masas efectivas ($0.06-1.1\,m_e$). La longitud crítica se determinó por interpolación, definida como la longitud a la cual la transmisión media alcanza un umbral de $10^{-4}$.
 
 El análisis de los datos revela una fuerte correlación que se ajusta a una ley de potencias de la forma $L_c = A \cdot (m^*)^B$. La regresión de los datos experimentales arrojó un exponente $B = -0.4768 \pm 0.0006$, con un coeficiente de determinación $R^2 = 0.9992$. Este resultado valida experimentalmente la dependencia teórica $L_c \propto 1/\sqrt{m^*}$, con un error relativo del 4.63\% para el exponente. La ley empírica obtenida permite predecir la longitud de escala mínima para diferentes materiales, lo cual tiene implicaciones directas para el futuro del diseño de dispositivos semiconductores.
+
+Adicionalmente, se identifica una temperatura crítica de 445 K ($172^o C$) para la cual la energía térmica establece un suelo térmico de transmisión que invalida el estado de bloqueo (OFF) del transistor, independientemente de la longitud del canal. Este fenómeno provoca que la longitud crítica del silicio deba aumentar de 4.3 nm a 6 nm, evidenciando que el calor actúa como un límite físico adicional que revierte el proceso de miniaturización en entornos de baja disipación o aplicaciones aeroespaciales
 
 \end{minipage}
 
@@ -145,11 +149,10 @@ El análisis de los datos revela una fuerte correlación que se ajusta a una ley
 \input{content/02_Resultados}
 
 \input{content/03_Analisis}
-
+\newpage
 \input{content/04_Conclusiones}
 
 
-\newpage
 \addcontentsline{toc}{section}{Referencias} % Elige según idioma
 %\addcontentsline{toc}{section}{References} % Elige según idioma
 
